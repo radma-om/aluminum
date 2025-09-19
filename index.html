@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة تسعير شرائح الألمنيوم للرول شتر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --gray: #7f8c8d;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin: 20px 0 15px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 8px;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin: 15px 0;
+            color: var(--dark);
+        }
+        
+        .settings-panel {
+            padding: 20px;
+            background: var(--light);
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
+        .order-table {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            min-width: 1100px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--white);
+        }
+        
+        .btn-danger {
+            background: var(--accent);
+            color: var(--white);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .summary {
+            padding: 20px;
+            background: var(--light);
+            border-top: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .summary-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .summary-value {
+            font-weight: bold;
+        }
+        
+        .total-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .profit-positive {
+            color: var(--success);
+        }
+        
+        .profit-negative {
+            color: var(--accent);
+        }
+        
+        .note {
+            color: var(--gray);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group input {
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .input-group .unit {
+            background: #eee;
+            padding: 0 10px;
+            border: 1px solid #ddd;
+            border-right: none;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border-radius: 5px 0 0 5px;
+        }
+        
+        @media (max-width: 1200px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+        
+        .month-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .month-selector select {
+            flex: 1;
+        }
+        
+        .lme-source {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        .cost-details {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> حاسبة تسعير شرائح الألمنيوم للرول شتر</h1>
+        </header>
+        
+        <div class="settings-panel">
+            <h2><i class="fas fa-cog"></i> الإعدادات العامة</h2>
+            
+            <div class="settings-grid">
+                <div class="form-group">
+                    <label for="priceType">وضع السعر (LME)</label>
+                    <select id="priceType">
+                        <option value="3months">3 أشهر</option>
+                        <option value="cash">كاش</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exchangeRate">سعر الصرف (1$ = ? ر.ع)</label>
+                    <div class="input-group">
+                        <span class="unit">1$ =</span>
+                        <input type="number" id="exchangeRate" value="0.384615" step="0.000001">
+                        <span class="unit">ر.ع</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="manufacturingCost">مصنعية ثابتة ($/طن)</label>
+                    <div class="input-group">
+                        <input type="number" id="manufacturingCost" value="1500">
+                        <span class="unit">$/طن</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vat">ضريبة القيمة المضافة (VAT%)</label>
+                    <div class="input-group">
+                        <input type="number" id="vat" value="5" step="0.1">
+                        <span class="unit">%</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="whiteColorExtra">زيادة اللون الأبيض (ر.ع/طن)</label>
+                    <div class="input-group">
+                        <input type="number" id="whiteColorExtra" value="160">
+                        <span class="unit">ر.ع/طن</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="profitMargin">نسبة الربح/الفائدة العامة (%)</label>
+                    <div class="input-group">
+                        <input type="number" id="profitMargin" value="0" step="0.1">
+                        <span class="unit">%</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="month">الشهر (لأسعار LME)</label>
+                    <div class="month-selector">
+                        <select id="month">
+                            <option value="0">يناير 2025</option>
+                            <option value="1">فبراير 2025</option>
+                            <option value="2">مارس 2025</option>
+                            <option value="3">أبريل 2025</option>
+                            <option value="4">مايو 2025</option>
+                            <option value="5">يونيو 2025</option>
+                            <option value="6">يوليو 2025</option>
+                            <option value="7" selected>أغسطس 2025</option>
+                            <option value="8">سبتمبر 2025</option>
+                            <option value="9">أكتوبر 2025</option>
+                            <option value="10">نوفمبر 2025</option>
+                            <option value="11">ديسمبر 2025</option>
+                        </select>
+                    </div>
+                    <div class="lme-source">المصدر: Westmetall (LME Aluminium)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="manualLME">سعر LME يدوي ($/طن) - إذا تعذر الجلب التلقائي</label>
+                    <div class="input-group">
+                        <input type="number" id="manualLME" value="2500" step="1">
+                        <span class="unit">$/طن</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="order-table">
+            <h2><i class="fas fa-table"></i> تفاصيل الطلب</h2>
+            
+            <div class="actions">
+                <button class="btn btn-primary" id="addRow">
+                    <i class="fas fa-plus"></i> إضافة بند
+                </button>
+            </div>
+            
+            <table id="orderItems">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>السماكة (ملم)</th>
+                        <th>الطول (متر)</th>
+                        <th>الوزن الطولي (كجم/م)</th>
+                        <th>الوزن المطلوب (طن)</th>
+                        <th>اللون</th>
+                        <th>نسبة الفائدة %</th>
+                        <th>التكلفة/متر (ر.ع)</th>
+                        <th>التكلفة/قطعة (ر.ع)</th>
+                        <th>التسعيرة/متر (ر.ع)</th>
+                        <th>التسعيرة/قطعة (ر.ع)</th>
+                        <th>عدد القطع</th>
+                        <th>الإجمالي (ر.ع)</th>
+                        <th>إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- سيتم إضافة البنود ديناميكياً -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary">
+            <h2><i class="fas fa-file-invoice-dollar"></i> ملخص التكاليف والأسعار</h2>
+            
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3><i class="fas fa-money-bill-wave"></i> التكلفة الإجمالية</h3>
+                    <div class="summary-item">
+                        <span>التكلفة الإجمالية:</span>
+                        <span class="summary-value" id="totalCost">0.00 ر.ع</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>التكلفة/الطن:</span>
+                        <span class="summary-value" id="costPerTon">0.00 ر.ع/طن</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>الوزن الكلي:</span>
+                        <span class="summary-value" id="totalWeight">0.00 طن</span>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3><i class="fas fa-tags"></i> السعر الإجمالي</h3>
+                    <div class="summary-item">
+                        <span>السعر الإجمالي:</span>
+                        <span class="summary-value" id="totalPrice">0.00 ر.ع</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>السعر/الطن:</span>
+                        <span class="summary-value" id="pricePerTon">0.00 ر.ع/طن</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>عدد القطع الكلي:</span>
+                        <span class="summary-value" id="totalPieces">0</span>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <h3><i class="fas fa-chart-line"></i> هامش الربح</h3>
+                    <div class="summary-item">
+                        <span>إجمالي الربح:</span>
+                        <span class="summary-value" id="totalProfit">0.00 ر.ع</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>نسبة الربح:</span>
+                        <span class="summary-value" id="profitPercentage">0.00%</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>متوسط نسبة الربح:</span>
+                        <span class="summary-value" id="avgProfitMargin">0.00%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="note">يتم تحديث الحسابات تلقائياً عند تعديل أي حقل</p>
+        </div>
+    </div>
+
+    <script>
+        // بيانات أسعار LME الافتراضية (شهر أغسطس 2025)
+        const lmePrices = {
+            '3months': [2450, 2470, 2490, 2510, 2530, 2550, 2570, 2590, 2610, 2630, 2650, 2670],
+            'cash': [2400, 2420, 2440, 2460, 2480, 2500, 2520, 2540, 2560, 2580, 2600, 2620]
+        };
+
+        // بيانات السماكات والوزن الطولي المرتبط بها
+        const thicknessOptions = {
+            '1.1': 0.63,
+            '1.5': 0.839
+        };
+
+        // البنود الافتراضية
+        const defaultItems = [
+            { thickness: '1.1', length: 3.3, weight: 0.5, color: 'mill', profitMargin: 10 },
+            { thickness: '1.1', length: 3.3, weight: 0.5, color: 'white', profitMargin: 10 },
+            { thickness: '1.5', length: 6.2, weight: 1, color: 'mill', profitMargin: 15 },
+            { thickness: '1.5', length: 6.2, weight: 1, color: 'white', profitMargin: 15 }
+        ];
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        // تهيئة الصفحة بالقيم الافتراضية
+        function initializePage() {
+            // تعيين الشهر الحالي (أغسطس كافتراضي)
+            const currentMonth = new Date().getMonth();
+            document.getElementById('month').value = currentMonth > 0 ? currentMonth - 1 : 0;
+            
+            // إضافة البنود الافتراضية
+            defaultItems.forEach(item => addOrderRow(item));
+            
+            // حساب التكاليف الأولية
+            calculateAll();
+        }
+
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            // تحديث الحسابات عند تغيير أي إعداد
+            const settingsInputs = document.querySelectorAll('.settings-panel input, .settings-panel select');
+            settingsInputs.forEach(input => {
+                input.addEventListener('input', calculateAll);
+            });
+            
+            // زر إضافة بند جديد
+            document.getElementById('addRow').addEventListener('click', function() {
+                addOrderRow();
+            });
+        }
+
+        // إضافة صف جديد إلى جدول الطلبات
+        function addOrderRow(data = {}) {
+            const tbody = document.querySelector('#orderItems tbody');
+            const rowIndex = tbody.rows.length;
+            
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td>${rowIndex + 1}</td>
+                <td>
+                    <select class="thickness">
+                        <option value="1.1" ${data.thickness === '1.1' ? 'selected' : ''}>1.1 ملم</option>
+                        <option value="1.5" ${data.thickness === '1.5' ? 'selected' : ''}>1.5 ملم</option>
+                    </select>
+                </td>
+                <td><input type="number" class="length" value="${data.length || ''}" step="0.1" min="0"></td>
+                <td><input type="number" class="linear-weight" value="${data.linearWeight || ''}" step="0.001" min="0" readonly></td>
+                <td><input type="number" class="weight" value="${data.weight || ''}" step="0.01" min="0"></td>
+                <td>
+                    <select class="color">
+                        <option value="mill" ${data.color === 'mill' ? 'selected' : ''}>بدون لون (Mill)</option>
+                        <option value="white" ${data.color === 'white' ? 'selected' : ''}>أبيض</option>
+                    </select>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input type="number" class="item-profit-margin" value="${data.profitMargin || 0}" step="0.1" min="0">
+                        <span class="unit">%</span>
+                    </div>
+                </td>
+                <td class="cost-per-meter">0.00</td>
+                <td class="cost-per-piece">0.00</td>
+                <td class="price-per-meter">0.00</td>
+                <td class="price-per-piece">0.00</td>
+                <td class="pieces-count">0</td>
+                <td class="item-total">0.00</td>
+                <td>
+                    <button class="btn btn-danger delete-row"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            
+            // تحديث الوزن الطولي بناء على السماكة المختارة
+            const thicknessSelect = row.querySelector('.thickness');
+            const linearWeightInput = row.querySelector('.linear-weight');
+            
+            // تعيين الوزن الطولي الافتراضي بناء على السماكة المختارة
+            const selectedThickness = thicknessSelect.value;
+            linearWeightInput.value = thicknessOptions[selectedThickness];
+            
+            // إضافة مستمع حدث لتحديث الوزن الطولي عند تغيير السماكة
+            thicknessSelect.addEventListener('change', function() {
+                linearWeightInput.value = thicknessOptions[this.value];
+                calculateAll();
+            });
+            
+            // إضافة مستمعي الأحداث للحقول الجديدة
+            const inputs = row.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateAll);
+            });
+            
+            // مستمع حدث لحذف الصف
+            row.querySelector('.delete-row').addEventListener('click', function() {
+                if (tbody.rows.length > 1) {
+                    tbody.removeChild(row);
+                    // إعادة ترقيم الصفوف
+                    Array.from(tbody.rows).forEach((r, idx) => {
+                        r.cells[0].textContent = idx + 1;
+                    });
+                    calculateAll();
+                } else {
+                    alert('يجب أن يحتوي الطلب على بند واحد على الأقل');
+                }
+            });
+            
+            // حساب التكاليف بعد إضافة الصف
+            calculateAll();
+        }
+
+        // حساب جميع التكاليف
+        function calculateAll() {
+            // الحصول على الإعدادات الحالية
+            const priceType = document.getElementById('priceType').value;
+            const exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
+            const manufacturingCost = parseFloat(document.getElementById('manufacturingCost').value);
+            const vat = parseFloat(document.getElementById('vat').value);
+            const whiteColorExtra = parseFloat(document.getElementById('whiteColorExtra').value);
+            const globalProfitMargin = parseFloat(document.getElementById('profitMargin').value);
+            const month = parseInt(document.getElementById('month').value);
+            const manualLME = parseFloat(document.getElementById('manualLME').value);
+            
+            // حساب سعر LME الأساسي
+            let lmePrice;
+            try {
+                lmePrice = lmePrices[priceType][month] || manualLME;
+            } catch {
+                lmePrice = manualLME;
+            }
+            
+            // حساب سعر الطن الأساسي
+            const basePricePerTonUSD = lmePrice + manufacturingCost;
+            const basePricePerTonOMR = basePricePerTonUSD * exchangeRate;
+            const priceWithVAT = basePricePerTonOMR * (1 + vat / 100);
+            const baseCostPerKg = priceWithVAT / 1000;
+            
+            let grandTotalCost = 0;
+            let grandTotalPrice = 0;
+            let totalWeight = 0;
+            let totalPieces = 0;
+            let totalProfitMargin = 0;
+            let itemsCount = 0;
+            
+            const rows = document.querySelectorAll('#orderItems tbody tr');
+            
+            rows.forEach(row => {
+                // قراءة القيم من الحقول
+                const thickness = row.querySelector('.thickness').value;
+                const length = parseFloat(row.querySelector('.length').value) || 0;
+                const linearWeight = parseFloat(row.querySelector('.linear-weight').value) || 0;
+                const weight = parseFloat(row.querySelector('.weight').value) || 0;
+                const color = row.querySelector('.color').value;
+                const itemProfitMargin = parseFloat(row.querySelector('.item-profit-margin').value) || 0;
+                
+                // حساب التكلفة الأساسية للكيلو
+                let finalCostPerKg = baseCostPerKg;
+                
+                // إضافة تكلفة اللون الأبيض إذا تم اختياره
+                if (color === 'white') {
+                    finalCostPerKg += (whiteColorExtra / 1000);
+                }
+                
+                // حساب التكلفة للمتر والقطعة (قبل إضافة الربح)
+                const costPerMeter = finalCostPerKg * linearWeight;
+                const pieceWeight = length * linearWeight;
+                const costPerPiece = finalCostPerKg * pieceWeight;
+                
+                // حساب نسبة الربح الإجمالية (العامة + الخاصة بالبند)
+                const totalProfitMarginPerItem = globalProfitMargin + itemProfitMargin;
+                
+                // حساب التسعيرة بعد إضافة الربح
+                const pricePerKg = finalCostPerKg * (1 + totalProfitMarginPerItem / 100);
+                const pricePerMeter = pricePerKg * linearWeight;
+                const pricePerPiece = pricePerKg * pieceWeight;
+                
+                // حساب عدد القطع
+                const piecesCount = pieceWeight > 0 ? Math.floor((weight * 1000) / pieceWeight) : 0;
+                
+                // حساب إجمالي التكلفة والسعر للبند
+                const itemTotalCost = costPerPiece * piecesCount;
+                const itemTotalPrice = pricePerPiece * piecesCount;
+                
+                // تحديث القيم في الجدول
+                row.querySelector('.cost-per-meter').textContent = costPerMeter.toFixed(3);
+                row.querySelector('.cost-per-piece').textContent = costPerPiece.toFixed(3);
+                row.querySelector('.price-per-meter').textContent = pricePerMeter.toFixed(3);
+                row.querySelector('.price-per-piece').textContent = pricePerPiece.toFixed(3);
+                row.querySelector('.pieces-count').textContent = piecesCount;
+                row.querySelector('.item-total').textContent = itemTotalPrice.toFixed(2);
+                
+                // جمع الإجماليات
+                grandTotalCost += itemTotalCost;
+                grandTotalPrice += itemTotalPrice;
+                totalWeight += weight;
+                totalPieces += piecesCount;
+                totalProfitMargin += totalProfitMarginPerItem;
+                itemsCount++;
+            });
+            
+            // حساب المتوسطات والإضافيات
+            const avgProfitMargin = itemsCount > 0 ? totalProfitMargin / itemsCount : 0;
+            const totalProfit = grandTotalPrice - grandTotalCost;
+            const profitPercentage = grandTotalCost > 0 ? (totalProfit / grandTotalCost) * 100 : 0;
+            const costPerTon = totalWeight > 0 ? grandTotalCost / totalWeight : 0;
+            const pricePerTon = totalWeight > 0 ? grandTotalPrice / totalWeight : 0;
+            
+            // تحديث إجماليات التكلفة والسعر
+            document.getElementById('totalCost').textContent = grandTotalCost.toFixed(2) + ' ر.ع';
+            document.getElementById('totalPrice').textContent = grandTotalPrice.toFixed(2) + ' ر.ع';
+            document.getElementById('totalWeight').textContent = totalWeight.toFixed(2) + ' طن';
+            document.getElementById('totalPieces').textContent = totalPieces.toLocaleString();
+            document.getElementById('costPerTon').textContent = costPerTon.toFixed(2) + ' ر.ع/طن';
+            document.getElementById('pricePerTon').textContent = pricePerTon.toFixed(2) + ' ر.ع/طن';
+            document.getElementById('totalProfit').textContent = totalProfit.toFixed(2) + ' ر.ع';
+            document.getElementById('profitPercentage').textContent = profitPercentage.toFixed(2) + '%';
+            document.getElementById('avgProfitMargin').textContent = avgProfitMargin.toFixed(2) + '%';
+            
+            // تلوين قيمة الربح
+            const profitElement = document.getElementById('totalProfit');
+            profitElement.className = 'summary-value ' + (totalProfit >= 0 ? 'profit-positive' : 'profit-negative');
+            
+            const percentageElement = document.getElementById('profitPercentage');
+            percentageElement.className = 'summary-value ' + (profitPercentage >= 0 ? 'profit-positive' : 'profit-negative');
+        }
+    </script>
+</body>
+</html>
